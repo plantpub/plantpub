@@ -37,7 +37,42 @@ router.get('/posts', function (req, res, next) {
 
     });
     //
+});
+router.get('/post*', function (req, res, next) {
+    console.log(req.path);
+    var request_url=req.path;
+    var request_url_arr=request_url.split("/");
+    var obj_id=request_url_arr[request_url_arr.length-1];
+    console.log(obj_id);
+
+    //
+    db.open(function (err, db) {
+        if (!err) {
+            console.log('connect');
+            db.collection('blogs', {safe: true}, function (err, collection) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    //
+
+                    obj_id=mongodb.ObjectId(obj_id);
+
+                    //
+                    collection.find({_id:obj_id}).toArray(function (err, docs) {
+                        console.log('find');
+                        console.log(docs);
+                        res.render('post', {post:docs[0]});
+                    });
+                }
+            });
+
+        } else {
+            console.log(err);
+        }
+
+    });
+    //
+
 
 });
-
 module.exports = router;

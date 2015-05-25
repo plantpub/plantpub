@@ -5,5 +5,6 @@ block content
     p Welcome to #{title}
     ul
     each val, index in blogs
-        li=val.title
+        li
+            a.title(href="/post/#{val._id}")=val.title
     //img(src="img/about.jpeg")
