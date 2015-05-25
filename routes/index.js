@@ -24,7 +24,7 @@ router.get('/posts', function (req, res, next) {
                 } else {
                     collection.find().toArray(function (err, docs) {
                         console.log('find');
-                        console.log(docs);
+                        //console.log(docs);
 
                         res.render('posts', {title: 'posts',blogs:docs});
                     });
@@ -38,7 +38,7 @@ router.get('/posts', function (req, res, next) {
     });
     //
 });
-router.get('/post*', function (req, res, next) {
+router.get('/post/*', function (req, res, next) {
     console.log(req.path);
     var request_url=req.path;
     var request_url_arr=request_url.split("/");
@@ -60,7 +60,7 @@ router.get('/post*', function (req, res, next) {
                     //
                     collection.find({_id:obj_id}).toArray(function (err, docs) {
                         console.log('find');
-                        console.log(docs);
+                        //console.log(docs);
                         res.render('post', {post:docs[0]});
                     });
                 }
