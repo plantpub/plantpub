@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  form(action="/addpost",method="post")
+    input.input_title(name="title")
+    textarea.input_text(name="text")
+    button.input_submit submit

@@ -6,10 +6,58 @@ var db = new mongodb.Db('plantpub', server, {safe: true});
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('index', {title: 'Express'});
+    db.open(function (err, db) {
+        if (!err) {
+            console.log('connect');
+            db.collection('blogs', {safe: true}, function (err, collection) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    collection.find().toArray(function (err, docs) {
+                        console.log('find');
+                        //console.log(docs);
+
+                        res.render('index', {title: 'posts',blogs:docs});
+                    });
+                }
+            });
+
+        } else {
+            console.log(err);
+        }
+
+    });
 });
 router.get('/about', function (req, res, next) {
     res.render('about', {title: 'Express'});
+});
+router.get('/add', function (req, res, next) {
+    res.render('add', {title: 'Express'});
+});
+router.post('/addpost', function (req, res, next) {
+    var title=req.body.title;
+    var text=req.body.text;
+    //
+    db.open(function (err, db) {
+        if (!err) {
+            console.log('connect');
+            db.collection('blogs', {safe: true}, function (err, collection) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    collection.save({title:title,text:text})(function (err, docs) {
+
+                    });
+                }
+            });
+
+        } else {
+            console.log(err);
+        }
+
+    });
+    //
+    res.render('addpost_ok', {title: 'Express'});
 });
 router.get('/posts', function (req, res, next) {
     console.log(req.query.page);
