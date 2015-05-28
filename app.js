@@ -8,7 +8,21 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
+
 var app = express();
+
+app.use(cookieParser());
+// 设置 Session
+app.use(session({
+  store: new RedisStore({
+    host: "127.0.0.1",
+    port: 6379,
+    ttl: 60 * 60 * 24 * 30 // 过期时间
+  }),
+  secret: 'plant pub'
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
