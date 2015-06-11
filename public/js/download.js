@@ -48,3 +48,7 @@ function setDownloadUrl() {
     }
     document.getElementById('download-btn').setAttribute('href', url)
 }
+
+if (window.devicePixelRatio && devicePixelRatio >= 2) {
+
+}

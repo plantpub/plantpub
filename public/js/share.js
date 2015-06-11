@@ -22,8 +22,10 @@
         }
     }
     function init(){
-        WeixinJSBridge.on("menu:share:appmessage", shareToFriend)
-        WeixinJSBridge.on("menu:share:timeline", shareToFriends)
+        WeixinJSBridge.on("menu:share:appmessage", shareToFriend);
+        WeixinJSBridge.on("menu:share:timeline", shareToFriends);
+        document.getElementById('car_audio').play();
+        document.getElementById('video').play();
     }
     function shareToFriend(){
         WeixinJSBridge.invoke("sendAppMessage", shareConfig, function (res) {

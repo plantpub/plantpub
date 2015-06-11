@@ -37,6 +37,9 @@ function createPages() {
     var y;
 
     function show_page(page_index){
+        for(i=0;i<max_page;i++){
+            pages[i].removeAttribute("active");
+        }
         var page=pages[page_index];
         page.setAttribute("active","yes");
         zindex++;
@@ -46,9 +49,9 @@ function createPages() {
         //page.style.webkitTransitionDuration="0.7s";
         //page.style.webkitTransform="translate3d(0,0,0)";
         setTimeout(function(){
-            page.style.webkitTransitionDuration="0.7s";
+            page.style.webkitTransitionDuration="0.4s";
             page.style.webkitTransform="translate3d(0,0,0)";
-        },10);
+        },5);
     }
     var fx;
     function page_up() {
@@ -82,6 +85,8 @@ function createPages() {
             }else{
                 page_index--;
                 y=1000;
+                console.log(page_index);
+                show_page(page_index);
             }
 
         }
@@ -91,19 +96,14 @@ function createPages() {
             }else{
                 page_index++;
                 y=-1000;
+                console.log(page_index);
+                show_page(page_index);
             }
 
         }
-        console.log(page_index);
-
-        show_page(page_index);
-
     }
 
     gun(window, page_up, page_down, page_left, page_right,ok_fn);
-
-
-
 
 }
 
