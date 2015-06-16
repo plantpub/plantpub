@@ -5,14 +5,14 @@ var zp = {
     r: 0,//单个角度
     this_index: 1,//当前指向的 item 序列
     items: [
-        {index: 1, name: "1", rand: 20},
-        {index: 2, name: "2", rand: 10},
-        {index: 3, name: "3", rand: 6},
-        {index: 4, name: "4", rand: 5},
-        {index: 5, name: "5", rand: 4},
-        {index: 6, name: "6", rand: 3},
-        {index: 7, name: "7", rand: 2},
-        {index: 8, name: "8", rand: 1}
+        {index: 1, name: "1",info:"",state:0, rand: 20},
+        {index: 2, name: "2",info:"",state:1, rand: 10},
+        {index: 3, name: "3",info:"",state:1, rand: 6},
+        {index: 4, name: "4",info:"",state:1, rand: 5},
+        {index: 5, name: "5",info:"",state:1, rand: 4},
+        {index: 6, name: "6",info:"",state:1, rand: 3},
+        {index: 7, name: "7",info:"",state:1, rand: 2},
+        {index: 8, name: "8",info:"",state:1, rand: 1}
     ],
     random_index: [],
     init: function (e) {
@@ -33,8 +33,12 @@ var zp = {
         zp.e.addEventListener("webkitTransitionEnd", function () {
             zp.count--;
             console.log(zp.get);
-            zp.this_index = zp.get; //设置当前的编号
+
             zp.isring = false;
+            //取得 当前选中的项
+            var this_item=zp.items.filter(function(element,pos){return element.index==zp.get})[0];
+            console.dir(this_item);
+            zp.this_index = zp.get; //设置当前的编号
         });
     },
     start: function () {
