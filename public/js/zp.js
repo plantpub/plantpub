@@ -5,13 +5,13 @@ var zp = {
     r: 0,//单个角度
     this_index: 1,//当前指向的 item 序列
     items: [
-        {index: 1, name: "1",info:"",state:0, rand: 20},
-        {index: 2, name: "2",info:"",state:1, rand: 10},
-        {index: 3, name: "3",info:"",state:1, rand: 6},
-        {index: 4, name: "4",info:"",state:1, rand: 5},
-        {index: 5, name: "5",info:"",state:1, rand: 4},
-        {index: 6, name: "6",info:"",state:1, rand: 3},
-        {index: 7, name: "7",info:"",state:1, rand: 2},
+        {index: 1, name: "1",info:"",state:0, rand: 0},
+        {index: 2, name: "2",info:"",state:1, rand: 0},
+        {index: 3, name: "3",info:"",state:1, rand: 0},
+        {index: 4, name: "4",info:"",state:1, rand: 0},
+        {index: 5, name: "5",info:"",state:1, rand: 0},
+        {index: 6, name: "6",info:"",state:1, rand: 0},
+        {index: 7, name: "7",info:"",state:1, rand: 1},
         {index: 8, name: "8",info:"",state:1, rand: 1}
     ],
     random_index: [],
@@ -51,7 +51,7 @@ var zp = {
                 if (zp.count > 0) {
 
                     //得到 抽中的 编号
-                    zp.get = zp.random_index[Math.ceil(Math.random() * zp.random_index.length)];
+                    zp.get = zp.random_index[Math.ceil(Math.random() * zp.random_index.length)-1];
                     console.log("当前的编号:" + zp.this_index);
                     console.log("抽中的编号:" + zp.get);
                     var r;
