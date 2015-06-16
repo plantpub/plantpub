@@ -1,16 +1,16 @@
 var zp = {
     isring: false,//正在不旋转
-    count: 300,//可以抽奖的次数
+    count: 3,//可以抽奖的次数
     num: 0,
     r: 0,//单个角度
     this_index: 1,//当前指向的 item 序列
     items: [
-        {index: 1, name: "1",info:"",state:0, rand: 0},
-        {index: 2, name: "2",info:"",state:1, rand: 0},
-        {index: 3, name: "3",info:"",state:1, rand: 0},
-        {index: 4, name: "4",info:"",state:1, rand: 0},
-        {index: 5, name: "5",info:"",state:1, rand: 0},
-        {index: 6, name: "6",info:"",state:1, rand: 0},
+        {index: 1, name: "1",info:"",state:0, rand: 1},
+        {index: 2, name: "2",info:"",state:1, rand: 1},
+        {index: 3, name: "3",info:"",state:1, rand: 10},
+        {index: 4, name: "4",info:"",state:1, rand: 21},
+        {index: 5, name: "5",info:"",state:1, rand: 3},
+        {index: 6, name: "6",info:"",state:1, rand: 32},
         {index: 7, name: "7",info:"",state:1, rand: 1},
         {index: 8, name: "8",info:"",state:1, rand: 1}
     ],
@@ -68,13 +68,13 @@ var zp = {
 
                     }
                     console.log("偏转角度：" + r)
-                    zp.num += 360;
+                    zp.num += 360*3;
                     zp.num += r;
 
                     zp.e.style.webkitTransform = 'rotate(' + zp.num + 'deg)';
                     zp.isring = true;
                 } else {
-                    alert("抽奖机会已经耗尽")
+                    alert("抽奖机会已经耗尽");
                 }
             }
 
