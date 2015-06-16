@@ -31,6 +31,9 @@ router.get('/', function (req, res, next) {
 router.get('/about', function (req, res, next) {
     res.render('about', {title: 'Express'});
 });
+router.get('/zp', function (req, res, next) {
+    res.render('zp', {title: 'Express'});
+});
 router.get('/add', function (req, res, next) {
     res.render('add', {title: 'Express'});
 });
