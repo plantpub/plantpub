@@ -1,0 +1,8 @@
+extends user_layout
+
+block content
+    h2.post_title= post.title
+    div.post_text=post.text
+    nav
+        a(href="/edit/" + obj_id)="edit"
+        a(href="/delpost/" + obj_id)="del"

@@ -1,11 +1,11 @@
-extends layout
+extends user_layout
 
 block content
-  p="welcome"
-  span.user_name=userDoc.name
-  p #{title}
-  //img(src="img/about.jpeg")
-  ul
-  each val, index in blogs
-    li
-      a.title(href="/post/#{val._id}")=val.title
+
+
+    p #{title}
+    //img(src="img/about.jpeg")
+    ul
+    each val, index in blogs
+        li
+            a.title(href="/post/#{val._id}")=val.title

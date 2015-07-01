@@ -1,0 +1,18 @@
+doctype html
+html
+    head
+        title= title
+        meta(name="viewport",content="initial-scale=2.0,maximum-scale=1,user-scalable=no")
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        script(src='/js/app.js')
+    body
+        h1 rhct UED
+
+        p="welcome"
+        span.user_name=userDoc.name
+        nav
+            a.logout(href="/logout")="logout"
+            a.logout(href="/add")="add"
+
+        block content
+        div.footer copyright rhct UED powered by plantPub

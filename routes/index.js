@@ -38,10 +38,16 @@ router.get('/', function (req, res, next) {
 router.get('/login', function (req, res, next) {
     var session=req.session;
     if(session.userName){
-        res.render('user_index', {});
+        res.render('user_index', {userDoc:session.userDoc});
     }else{
         res.render('login', {});
     }
+});
+router.get('/logout', function (req, res, next) {
+    var session=req.session;
+    session.userDoc=null;
+    session.userName=null;
+    res.render('logout_success', {});
 });
 router.post('/login', function (req, res, next) {
     var session=req.session;
@@ -82,7 +88,13 @@ router.get('/zp', function (req, res, next) {
     res.render('zp', {title: 'Express'});
 });
 router.get('/add', function (req, res, next) {
-    res.render('add', {title: 'Express'});
+    var session=req.session;
+    if(session.userName){
+        res.render('add', {userDoc:session.userDoc});
+    }else{
+        res.render('login', {});
+
+    }
 });
 router.post('/addpost', function (req, res, next) {
     var title = req.body.title;
@@ -135,7 +147,7 @@ router.post('/editpost', function (req, res, next) {
 
     });
     //
-    res.render('editpost_ok', {title: 'Express'});
+    res.render('editpost_ok', {obj_id: obj_id});
 });
 router.get('/delpost/*', function (req, res, next) {
     var request_url = req.path;
@@ -143,27 +155,40 @@ router.get('/delpost/*', function (req, res, next) {
     var obj_id = request_url_arr[request_url_arr.length - 1];
     obj_id = mongodb.ObjectId(obj_id);
 
+    var session=req.session;
+    if(session.userName){
+        db.open(function (err, db) {
+            if (!err) {
+                console.log('connect');
+                db.collection('blogs', {safe: true}, function (err, collection) {
+                    if (err) {
+                        console.log("err:"+err);
+                        res.render('delpost_error', {msg: 'collection err'});
+                    } else {
+                        collection.removeOne({_id: obj_id})(function (err, docs) {
+                            if(err){
+                                res.render('delpost_error', {msg: 'Express'});
+                            }else{
+                                res.render('delpost_ok', {msg: 'ok'});
+                            }
+                        });
+                    }
+                });
+
+            } else {
+                console.log(err);
+                res.render('delpost_error', {msg: 'db open err'});
+            }
+
+        });
+
+    }else{
+        res.render('delpost_error', {msg: 'u cant del post'});
+    }
     //
-    db.open(function (err, db) {
-        if (!err) {
-            console.log('connect');
-            db.collection('blogs', {safe: true}, function (err, collection) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    collection.removeOne({_id: obj_id})(function (err, docs) {
 
-                    });
-                }
-            });
-
-        } else {
-            console.log(err);
-        }
-
-    });
     //
-    res.render('delpost_ok', {title: 'Express'});
+
 });
 router.get('/posts', function (req, res, next) {
     console.log(req.query.page);
@@ -215,7 +240,13 @@ router.get('/post/*', function (req, res, next) {
                     collection.find({_id: obj_id}).toArray(function (err, docs) {
                         console.log('find');
                         //console.log(docs);
-                        res.render('post', {post: docs[0]});
+                        var session=req.session;
+                        if(session.userName){
+                            res.render('user_post', {obj_id:obj_id,userDoc:session.userDoc,post: docs[0]});
+                        }else{
+                            res.render('post', {post: docs[0]});
+                        }
+
                     });
                 }
             });
