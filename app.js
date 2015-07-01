@@ -17,7 +17,7 @@ app.use(cookieParser());
 // 设置 Session
 app.use(session({
   store: new RedisStore({
-    host: "127.0.0.1",
+    host: "localhost",
     port: 6379,
     ttl: 60 * 60 * 24 * 30 // 过期时间
   }),

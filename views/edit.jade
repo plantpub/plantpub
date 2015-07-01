@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    form(action="/editpost",method="post")
+        input.obj_id(name="obj_id",value=post._id,type="hidden")
+        input.post_title(name="title",value=post.title)
+        textarea.post_text(name="text")=post.text
+        p Welcome to #{title}
+        input(type="submit",value="ok")

@@ -5,17 +5,19 @@ var zp = {
     r: 0,//单个角度
     this_index: 1,//当前指向的 item 序列
     items: [
-        {index: 1, name: "1",info:"",state:0, rand: 1},
-        {index: 2, name: "2",info:"",state:1, rand: 1},
-        {index: 3, name: "3",info:"",state:1, rand: 10},
-        {index: 4, name: "4",info:"",state:1, rand: 21},
-        {index: 5, name: "5",info:"",state:1, rand: 3},
-        {index: 6, name: "6",info:"",state:1, rand: 32},
-        {index: 7, name: "7",info:"",state:1, rand: 1},
-        {index: 8, name: "8",info:"",state:1, rand: 1}
+        {index: 1, name: "1", info: "", state: 0, rand: 1},
+        {index: 2, name: "2", info: "", state: 1, rand: 1},
+        {index: 3, name: "3", info: "", state: 1, rand: 10},
+        {index: 4, name: "4", info: "", state: 1, rand: 21},
+        {index: 5, name: "5", info: "", state: 1, rand: 3},
+        {index: 6, name: "6", info: "", state: 1, rand: 32},
+        {index: 7, name: "7", info: "", state: 1, rand: 1},
+        {index: 8, name: "8", info: "", state: 1, rand: 1}
     ],
     random_index: [],
     init: function (e) {
+
+
         zp.r = 360 / zp.items.length;//单个旋转角度
         zp.item_count = zp.items.length;//多少个项目
 
@@ -36,7 +38,9 @@ var zp = {
 
             zp.isring = false;
             //取得 当前选中的项
-            var this_item=zp.items.filter(function(element,pos){return element.index==zp.get})[0];
+            var this_item = zp.items.filter(function (element, pos) {
+                return element.index == zp.get
+            })[0];
             console.dir(this_item);
             zp.this_index = zp.get; //设置当前的编号
         });
@@ -51,7 +55,7 @@ var zp = {
                 if (zp.count > 0) {
 
                     //得到 抽中的 编号
-                    zp.get = zp.random_index[Math.ceil(Math.random() * zp.random_index.length)-1];
+                    zp.get = zp.random_index[Math.ceil(Math.random() * zp.random_index.length) - 1];
                     console.log("当前的编号:" + zp.this_index);
                     console.log("抽中的编号:" + zp.get);
                     var r;
@@ -63,12 +67,12 @@ var zp = {
                             r = Math.abs(zp.get - zp.this_index) * zp.r;
                         }
                         if (zp.get < zp.this_index) {
-                            r = Math.abs(zp.item_count - Math.abs(zp.get - zp.this_index) )* zp.r;
+                            r = Math.abs(zp.item_count - Math.abs(zp.get - zp.this_index)) * zp.r;
                         }
 
                     }
                     console.log("偏转角度：" + r)
-                    zp.num += 360*3;
+                    zp.num += 360 * 3;
                     zp.num += r;
 
                     zp.e.style.webkitTransform = 'rotate(' + zp.num + 'deg)';
@@ -82,6 +86,26 @@ var zp = {
 
     }
 }
+var _ = {
+    local:{
+        saveObj: function (key, obj) {
+            localStorage.setItem(key, JSON.stringify(obj));
+        },
+        openObj: function (key) {
+            return JSON.parse(localStorage.getItem(key));
+        },
+        delObj: function (key) {
+            localStorage.removeItem(key);
+        },
+        clearObj: function () {
+            localStorage.clear();
+        }
+    },
+    select:function(){
+
+    }
+}
+
 window.onload = function () {
     zp.init();
     document.getElementById("btn").addEventListener("click", function () {

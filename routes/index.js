@@ -62,6 +62,62 @@ router.post('/addpost', function (req, res, next) {
     //
     res.render('addpost_ok', {title: 'Express'});
 });
+router.post('/editpost', function (req, res, next) {
+    var title=req.body.title;
+    var text=req.body.text;
+    var obj_id=req.body.obj_id;
+    obj_id=mongodb.ObjectId(obj_id);
+
+    //
+    db.open(function (err, db) {
+        if (!err) {
+            console.log('connect');
+            db.collection('blogs', {safe: true}, function (err, collection) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    collection.updateOne({_id:obj_id},{title:title,text:text})(function (err, docs) {
+
+                    });
+                }
+            });
+
+        } else {
+            console.log(err);
+        }
+
+    });
+    //
+    res.render('editpost_ok', {title: 'Express'});
+});
+router.get('/delpost/*', function (req, res, next) {
+    var request_url=req.path;
+    var request_url_arr=request_url.split("/");
+    var obj_id=request_url_arr[request_url_arr.length-1];
+    obj_id=mongodb.ObjectId(obj_id);
+
+    //
+    db.open(function (err, db) {
+        if (!err) {
+            console.log('connect');
+            db.collection('blogs', {safe: true}, function (err, collection) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    collection.removeOne({_id:obj_id})(function (err, docs) {
+
+                    });
+                }
+            });
+
+        } else {
+            console.log(err);
+        }
+
+    });
+    //
+    res.render('delpost_ok', {title: 'Express'});
+});
 router.get('/posts', function (req, res, next) {
     console.log(req.query.page);
     //
@@ -125,5 +181,43 @@ router.get('/post/*', function (req, res, next) {
     //
 
 
+});
+
+
+router.get('/edit/*', function (req, res, next) {
+    console.log(req.path);
+    var request_url=req.path;
+    var request_url_arr=request_url.split("/");
+    var obj_id=request_url_arr[request_url_arr.length-1];
+
+    console.log(obj_id);
+    //
+    db.open(function (err, db) {
+        if (!err) {
+            console.log('connect');
+            db.collection('blogs', {safe: true}, function (err, collection) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    //
+
+                    obj_id=mongodb.ObjectId(obj_id);
+
+                    //
+                    collection.find({_id:obj_id}).toArray(function (err, docs) {
+                        console.log('find');
+                        //console.log(docs);
+
+                        res.render('edit', {post:docs[0]});
+                    });
+                }
+            });
+
+        } else {
+            console.log(err);
+        }
+
+    });
+    //
 });
 module.exports = router;
