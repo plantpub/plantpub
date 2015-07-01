@@ -1,8 +1,9 @@
 extends layout
 
 block content
+  p="welcome"
+  span.user_name=userDoc.name
   p #{title}
-  a(href="/login")="login"
   //img(src="img/about.jpeg")
   ul
   each val, index in blogs

@@ -17,7 +17,14 @@ router.get('/', function (req, res, next) {
                         console.log('find');
                         //console.log(docs);
 
-                        res.render('index', {title: 'posts',blogs:docs});
+                        var session=req.session;
+                        console.dir(session.userDoc);
+                        if(session.userName){
+                            res.render('user_index', {title: 'posts',userDoc:session.userDoc, blogs: docs});
+                        }else{
+                            res.render('index', {title: 'posts',blogs: docs});
+                        }
+
                     });
                 }
             });
@@ -27,6 +34,46 @@ router.get('/', function (req, res, next) {
         }
 
     });
+});
+router.get('/login', function (req, res, next) {
+    var session=req.session;
+    if(session.userName){
+        res.render('user_index', {});
+    }else{
+        res.render('login', {});
+    }
+});
+router.post('/login', function (req, res, next) {
+    var session=req.session;
+    var user = req.body.user;
+    var pass = req.body.pass;
+    db.open(function (err, db) {
+        if (!err) {
+            console.log('connect');
+            db.collection('users', {safe: true}, function (err, collection) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    collection.findOne({name:user,pass:pass},function (err, doc) {
+                        console.log('find');
+                        console.log(doc);
+                        if(doc){
+                            session.userDoc=doc;
+                            session.userName=user;
+                            res.render('login_success', {title: 'posts', blogs: doc});
+                        }else{
+                            res.render('login_error', {title: 'posts', blogs: doc});
+                        }
+                    });
+                }
+            });
+
+        } else {
+            console.log(err);
+        }
+
+    });
+
 });
 router.get('/about', function (req, res, next) {
     res.render('about', {title: 'Express'});
@@ -38,8 +85,8 @@ router.get('/add', function (req, res, next) {
     res.render('add', {title: 'Express'});
 });
 router.post('/addpost', function (req, res, next) {
-    var title=req.body.title;
-    var text=req.body.text;
+    var title = req.body.title;
+    var text = req.body.text;
     //
     db.open(function (err, db) {
         if (!err) {
@@ -48,7 +95,7 @@ router.post('/addpost', function (req, res, next) {
                 if (err) {
                     console.log(err);
                 } else {
-                    collection.save({title:title,text:text})(function (err, docs) {
+                    collection.save({title: title, text: text})(function (err, docs) {
 
                     });
                 }
@@ -63,10 +110,10 @@ router.post('/addpost', function (req, res, next) {
     res.render('addpost_ok', {title: 'Express'});
 });
 router.post('/editpost', function (req, res, next) {
-    var title=req.body.title;
-    var text=req.body.text;
-    var obj_id=req.body.obj_id;
-    obj_id=mongodb.ObjectId(obj_id);
+    var title = req.body.title;
+    var text = req.body.text;
+    var obj_id = req.body.obj_id;
+    obj_id = mongodb.ObjectId(obj_id);
 
     //
     db.open(function (err, db) {
@@ -76,7 +123,7 @@ router.post('/editpost', function (req, res, next) {
                 if (err) {
                     console.log(err);
                 } else {
-                    collection.updateOne({_id:obj_id},{title:title,text:text})(function (err, docs) {
+                    collection.updateOne({_id: obj_id}, {title: title, text: text})(function (err, docs) {
 
                     });
                 }
@@ -91,10 +138,10 @@ router.post('/editpost', function (req, res, next) {
     res.render('editpost_ok', {title: 'Express'});
 });
 router.get('/delpost/*', function (req, res, next) {
-    var request_url=req.path;
-    var request_url_arr=request_url.split("/");
-    var obj_id=request_url_arr[request_url_arr.length-1];
-    obj_id=mongodb.ObjectId(obj_id);
+    var request_url = req.path;
+    var request_url_arr = request_url.split("/");
+    var obj_id = request_url_arr[request_url_arr.length - 1];
+    obj_id = mongodb.ObjectId(obj_id);
 
     //
     db.open(function (err, db) {
@@ -104,7 +151,7 @@ router.get('/delpost/*', function (req, res, next) {
                 if (err) {
                     console.log(err);
                 } else {
-                    collection.removeOne({_id:obj_id})(function (err, docs) {
+                    collection.removeOne({_id: obj_id})(function (err, docs) {
 
                     });
                 }
@@ -133,7 +180,7 @@ router.get('/posts', function (req, res, next) {
                         console.log('find');
                         //console.log(docs);
 
-                        res.render('posts', {title: 'posts',blogs:docs});
+                        res.render('posts', {title: 'posts', blogs: docs});
                     });
                 }
             });
@@ -147,9 +194,9 @@ router.get('/posts', function (req, res, next) {
 });
 router.get('/post/*', function (req, res, next) {
     console.log(req.path);
-    var request_url=req.path;
-    var request_url_arr=request_url.split("/");
-    var obj_id=request_url_arr[request_url_arr.length-1];
+    var request_url = req.path;
+    var request_url_arr = request_url.split("/");
+    var obj_id = request_url_arr[request_url_arr.length - 1];
     console.log(obj_id);
 
     //
@@ -162,13 +209,13 @@ router.get('/post/*', function (req, res, next) {
                 } else {
                     //
 
-                    obj_id=mongodb.ObjectId(obj_id);
+                    obj_id = mongodb.ObjectId(obj_id);
 
                     //
-                    collection.find({_id:obj_id}).toArray(function (err, docs) {
+                    collection.find({_id: obj_id}).toArray(function (err, docs) {
                         console.log('find');
                         //console.log(docs);
-                        res.render('post', {post:docs[0]});
+                        res.render('post', {post: docs[0]});
                     });
                 }
             });
@@ -186,10 +233,9 @@ router.get('/post/*', function (req, res, next) {
 
 router.get('/edit/*', function (req, res, next) {
     console.log(req.path);
-    var request_url=req.path;
-    var request_url_arr=request_url.split("/");
-    var obj_id=request_url_arr[request_url_arr.length-1];
-
+    var request_url = req.path;
+    var request_url_arr = request_url.split("/");
+    var obj_id = request_url_arr[request_url_arr.length - 1];
     console.log(obj_id);
     //
     db.open(function (err, db) {
@@ -200,23 +246,18 @@ router.get('/edit/*', function (req, res, next) {
                     console.log(err);
                 } else {
                     //
-
-                    obj_id=mongodb.ObjectId(obj_id);
-
+                    obj_id = mongodb.ObjectId(obj_id);
                     //
-                    collection.find({_id:obj_id}).toArray(function (err, docs) {
+                    collection.find({_id: obj_id}).toArray(function (err, docs) {
                         console.log('find');
                         //console.log(docs);
-
-                        res.render('edit', {post:docs[0]});
+                        res.render('edit', {post: docs[0]});
                     });
                 }
             });
-
         } else {
             console.log(err);
         }
-
     });
     //
 });

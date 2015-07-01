@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  p="login"
+  //img(src="img/about.jpeg")
+  form(action="/login",method="post")
+    input.user(name="user")
+    textarea.pass(name="pass",type="password")
+    button.input_submit submit
