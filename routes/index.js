@@ -107,7 +107,7 @@ router.post('/addpost', function (req, res, next) {
                 if (err) {
                     console.log(err);
                 } else {
-                    collection.save({title: title, text: text})(function (err, docs) {
+                    collection.save({title: title, text: text},function (err, docs) {
 
                     });
                 }
@@ -135,7 +135,7 @@ router.post('/editpost', function (req, res, next) {
                 if (err) {
                     console.log(err);
                 } else {
-                    collection.updateOne({_id: obj_id}, {title: title, text: text})(function (err, docs) {
+                    collection.updateOne({_id: obj_id}, {title: title, text: text},function (err, docs) {
 
                     });
                 }
@@ -165,7 +165,7 @@ router.get('/delpost/*', function (req, res, next) {
                         console.log("err:"+err);
                         res.render('delpost_error', {msg: 'collection err'});
                     } else {
-                        collection.removeOne({_id: obj_id})(function (err, docs) {
+                        collection.removeOne({_id: obj_id},function (err, docs) {
                             if(err){
                                 res.render('delpost_error', {msg: 'Express'});
                             }else{
